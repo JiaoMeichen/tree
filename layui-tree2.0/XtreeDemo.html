@@ -1,0 +1,196 @@
+﻿<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+		<meta name="viewport" content="width =device-width, initial-scale=1, maximum-scale=1" />
+		<title></title>
+		<meta charset="utf-8" />
+		<!--layui的css-->
+		<link href="layui/css/layui.css" rel="stylesheet" />
+		<style type="text/css">
+			form {
+				width: 500px;
+				margin: 10px auto;
+			}
+			
+			h1,
+			h2,
+			h3 {
+				padding: 10px 0;
+			}
+			
+			a {
+				text-align: right;
+				font-size: 18px;
+				color: #1C86EE;
+			}
+			
+			.xtree_contianer {
+				width: 500px;
+				border: 1px solid #9C9C9C;
+				overflow: auto;
+				margin-bottom: 30px;
+				background-color: #fff;
+				padding: 10px 0 25px 5px;
+			}
+			
+			.div-btns {
+				margin: 20px 0;
+			}
+			
+			.layui-form-label {
+				width: 60px !important;
+			}
+		</style>
+	</head>
+
+	<body>
+		<form class="layui-form" action="">
+			<div id="layui-xtree-demo1" style="width:300px;height:300px; border:1px solid black; margin:20px;overflow:auto;"></div>
+			<input type="button" value="选中" id="btn_getCk" />
+			<input type="button" value="展开" id="openTree" />
+			<input type="button" value="层级展开" id="openTreeByLayer" />
+			<input type="button" value="关闭" id="closeTree" />
+			<input type="button" value="全部数据" id="dataAll" />
+
+		</form>
+		<p class="choose_already">选中：</p>
+	</body>
+
+</html>
+<script src="http://libs.baidu.com/jquery/2.0.0/jquery.min.js"></script>
+<!--先引用layui的js-->
+<script src="layui/layui.js"></script>
+<!--引用xtree-->
+<script src="layui-xtree/layui-xtree.js"></script>
+<script type="text/javascript">
+	//tree数据结构
+	var json = [{
+		title: "节点1",
+		value: "jd1",
+		check: "true",
+		data: [{
+			title: "节点1.1",
+			value: "jd1.1",
+			check: "true",
+			data: []
+		}, {
+			title: "节点1.2",
+			value: "jd1.2",
+			check: "true",
+			data: []
+		}, {
+			title: "节点1.3",
+			value: "jd1.3",
+			check: "true",
+			data: []
+		}, {
+			title: "节点1.4",
+			value: "jd1.4",
+			check: "true",
+			data: []
+		}]
+	},{
+		title: "节点2",
+		value: "jd2",
+		check: "false",
+		data: [{
+			title: "节点2.1",
+			value: "jd2.1",
+			check: "false",
+			data: []
+		}, {
+			title: "节点2.2",
+			value: "jd2.2",
+			check: "false",
+			data: [{
+				title: "节点2.2.1",
+				value: "jd2.2.1",
+				check: "false",
+				data: []
+			}, {
+				title: "节点2.2.2",
+				value: "jd2.2.2",
+				check: "false",
+				data: []
+			}, {
+				title: "节点2.2.3",
+				value: "jd2.2.3",
+				check: "false",
+				data: []
+			}, {
+				title: "节点2.2.4",
+				value: "jd2.2.4",
+				check: "false",
+				data: []
+			}]
+		}, {
+			title: "节点2.3",
+			value: "jd2.3",
+			check: "false",
+			data: []
+		}, {
+			title: "节点2.4",
+			value: "jd2.4",
+			check: "false",
+			data: []
+		}]
+	}, {
+		title: "节点3",
+		value: "jd3",
+		check: "false",
+		data: []
+	}, {
+		title: "节点4",
+		value: "jd4",
+		check: "false",
+		data: []
+	}];
+
+	layui.use('form', function() {
+		var form = layui.form;
+
+		//创建tree
+		var xtree = new layuiXtree({
+			elem: 'layui-xtree-demo1' ,//放xtree的容器（必填）
+			form: form ,//layui form对象 （必填）
+			data: json ,//数据，结构请参照下面 （必填）
+			isopen: false, //初次加载时全部展开，默认true （选填）
+			color: "#ffe698", //图标颜色 （选填）
+			defaultlayer: 0, //默认不展开，如果超出最大层级则全展开
+			icon: { //图标样式 （选填）
+				open: "", //节点打开的图标
+				close: "", //节点关闭的图标
+				end: "" //末尾节点的图标
+			},
+			onclick: function(data) { //点击回调时间
+				console.log("点击节点："+data.value);
+			}
+
+		});
+		$("#dataAll").click(function(){
+					var oCks = xtree.GetDataAll(); //获取全部对象
+					for(var i = 0; i < oCks.length; i++) {
+						console.log("全部数据："+oCks[i].value);
+					}
+				})
+				$("#btn_getCk").click(function(){
+					var oCks = xtree.GetChecked(); //获取全部选中的末级节点checkbox对象
+					var str = ""
+					for(var i = 0; i < oCks.length; i++) {
+						str += oCks[i].value+"、"
+					}
+					$(".choose_already").html("选中的数据："+str)
+				})
+				$("#openTree").click(function(){
+					xtree.openTree(); //全展开
+				})
+				$("#closeTree").click(function(){
+					xtree.closeTree(); //关闭
+				})
+				$("#openTreeByLayer").click(function(){
+					xtree.openTreeByLayer(1); //层级展开
+				})
+	});
+</script>

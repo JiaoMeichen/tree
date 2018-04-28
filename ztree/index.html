@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<HTML>
+<HEAD>
+    <TITLE> ZTREE DEMO - Simple Data</TITLE>
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+	
+    <link rel="stylesheet" href="css/bootstrapStyle/bootstrapStyle.css" type="text/css">
+	
+    <script type="text/javascript" src="js/jquery.min.js"></script>
+    <script type="text/javascript" src="js/jquery.ztree.core.js"></script>
+    <script type="text/javascript" src="js/jquery.ztree.excheck.js"></script>
+    <SCRIPT type="text/javascript">
+        var setting = {
+				view: {
+					selectedMulti: false
+				},
+				check: {
+					enable: true
+				},
+				data: {
+					simpleData: {
+						enable: true
+					}
+				},
+				callback: {
+					onCheck: onCheck
+				}
+			};
+
+			var zNodes = [{
+				"name": "父节点1",
+				"open": true,
+				"id": 1,
+				"children": [{
+						"name": "父节点html",
+						"id": 11,
+						"open": false,
+						"html": "<input type='text'/>",
+						"children": [{
+								"name": "叶子节点111",
+								"id": 111
+							},
+							{
+								"name": "叶子节点112",
+								"id": 112,
+							},
+						]
+					},
+					{
+						"name": "父节点13",
+						"id": 12,
+						"isParent": false
+					}
+				]
+			}, {
+				"name": "父节点1",
+				"open": true,
+				"id": 2,
+				"children": [{
+						"name": "父节点html",
+						"id": 21,
+						"open": false,
+						"html": "<input type='text'/>",
+						"children": [{
+								"name": "叶子节点111",
+								"id": 211
+							},
+							{
+								"name": "叶子节点112",
+								"id": 212,
+							},
+						]
+					},
+					{
+						"name": "父节点13",
+						"id": 22,
+						"isParent": false
+					}
+				]
+			}, {
+				"name": "父节点1",
+				"open": true,
+				"id": 3,
+				"children": [{
+						"name": "父节点html",
+						"id": 31,
+						"open": false,
+						"html": "<input type='text'/>",
+						"children": [{
+								"name": "叶子节点111",
+								"id": 311
+							},
+							{
+								"name": "叶子节点112",
+								"id": 312,
+							},
+						]
+					},
+					{
+						"name": "父节点13",
+						"id": 32,
+						"isParent": false
+					}
+				]
+			}, ]
+
+			$(document).ready(function() {
+				$.fn.zTree.init($("#treeDemo"), setting, zNodes);
+			});
+
+			function onCheck(e, treeId, treeNode) {
+				var treeObj = $.fn.zTree.getZTreeObj("treeDemo"),
+					nodes = treeObj.getCheckedNodes(true),
+					v = "";
+					$("b").html("")
+				for(var i = 0; i < nodes.length; i++) {
+					v += nodes[i].name + ",";
+					$("b").append(nodes[i].id+"、")
+					console.log(nodes[i].id); //获取选中节点的值
+				}
+
+			}
+    </SCRIPT>
+</HEAD>
+
+<BODY>
+<ul id="treeDemo" class="ztree"></ul>
+<b></b>
+</BODY>
+</HTML>
